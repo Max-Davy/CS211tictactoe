@@ -6,10 +6,13 @@
 #include <string>
 using namespace std;
 
-void out(string output="",bool cr = false);//function to output string
-void out(int output=0,bool cr = false);//function to output integer
-void out(float output=0,bool cr = false);//function to output floating point
-void out(char output=0,bool cr = false);//function to output character
+/*
+    declare output functions for convenience
+*/
+void out(string output="",bool cr = false);
+void out(int output=0,bool cr = false);
+void out(float output=0,bool cr = false);
+void out(char output=0,bool cr = false);
 
 void drawBoard(int board[9],char player1='X',char player2='O');//function to draw board
 int in(int type, string prompt, bool cr=1);//function to get numeric input
@@ -70,7 +73,12 @@ int main() {
     display winner and winning board;
 */
 void announceWinner(int winner, int board[9]) {
-    out("Game over. Player ",0);out(winner);out(" wins!",1);
+    out("Game over. ",0);
+    if(winner==3) {
+        out("Game is a tie!", 1);
+    } else{
+        out("Player ",0);out(winner);out(" wins!",1);
+    }
     drawBoard(board);
 }
 
@@ -85,7 +93,7 @@ bool validMove(int board[9],int move) {
 /* 
     get if game has been won
     input "board" same as drawBoard function
-    outputs 0 if no win, 1 if player 1 win, 2 if player 2 win
+    outputs 0 if no win, 1 if player 1 win, 2 if player 2 win, 3 if tie
 */
 int winner(int board[9]){
     if ((board[0]==1&&board[3]==1&&board[6]==1)||/*col 1*/
@@ -106,6 +114,8 @@ int winner(int board[9]){
         (board[2]==2&&board[4]==2&&board[6]==2)||/*diagonals*/
         (board[0]==2&&board[4]==2&&board[8]==2)) {
         return 2;//player 2 win
+    } else if(board[0]!=0&&board[1]!=0&&board[2]!=0&&board[3]!=0&&board[4]!=0&&board[5]!=0&&board[6]!=0&&board[7]!=0&&board[8]!=0){
+        return 3;//tie
     } else {
         return 0;//no win yet
     }
