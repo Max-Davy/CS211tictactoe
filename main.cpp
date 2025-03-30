@@ -1,27 +1,33 @@
+/* 
+    Tic Tac Toe program in C++
+    Max Davy for WSU CS211 Spring 2025
+*/
 #include <iostream>
 #include <string>
 using namespace std;
 
-void out(string output="",bool cr = false);
-void out(int output=0,bool cr = false);
-void out(float output=0,bool cr = false);
-void drawBoard(int board[9],string player1="X",string player2="O");
-int in(int type, string prompt, bool cr=1);
-char in(char type, string prompt, bool cr=1);
-string in(string type, string prompt, bool cr=1);
-bool validMove(int board[9],int move);
-int winner(int board[9]);
-void announceWinner(int winner, int board[9]);
+void out(string output="",bool cr = false);//function to output string
+void out(int output=0,bool cr = false);//function to output integer
+void out(float output=0,bool cr = false);//function to output floating point
+void out(char output=0,bool cr = false);//function to output character
+
+void drawBoard(int board[9],char player1='X',char player2='O');//function to draw board
+int in(int type, string prompt, bool cr=1);//function to get numeric input
+char in(char type, string prompt, bool cr=1);//function to get character input
+string in(string type, string prompt, bool cr=1);//function to get string input
+bool validMove(int board[9],int move);//function to get if move is valid
+int winner(int board[9]);//function to get if player has won
+void announceWinner(int winner, int board[9]);//function to output winner
 
 int main() {
-    bool cont = true;
+    char cont = 'y';
     int board[9];
     char player1;
     char player2;
     int win;
     int move;
     
-    while (cont) {
+    while (cont=='y') {
         for(int i=0;i<=9;i++) {
             board[i]=0;
         }
@@ -29,7 +35,7 @@ int main() {
         out("Welcome to Tic Tac Toe", 1);
         player1 = in(' ',"Enter player 1 symbol:");
         player2 = in(' ',"Enter player 2 symbol:");
-        drawBoard(board);
+        drawBoard(board, player1, player2);
         
         while (win==0) {
             //player 1's turn
@@ -39,7 +45,7 @@ int main() {
                 move = in(0,"Choose player 1 move (square 1 through 9):")-1;
             }
             board[move] = 1;
-            drawBoard(board);
+            drawBoard(board, player1, player2);
             win = winner(board);
             if(win){break;}
             
@@ -50,12 +56,13 @@ int main() {
                 move = in(0,"Choose player 2 move (square 1 through 9):")-1;
             }
             board[move] = 2;
-            drawBoard(board);
+            drawBoard(board, player1, player2);
             win = winner(board);
         }
         announceWinner(win, board);
         cont = in(' ',"Continue (y/n)?",1);
     }
+    out("Exiting program", true);
     return 0;
 }
 
@@ -111,18 +118,20 @@ int in(int type,string prompt, bool cr) {
     cin>>type;
     return type;
 }
+
 char in(char type,string prompt, bool cr) {
     out(prompt,1);
     cin>>type;
     return type;
 }
+
 string in(string type,string prompt, bool cr) {
     out(prompt,1);
     cin>>type;
     return type;
 }
 
-/* print string, integer, or float "output" to command line
+/* print string, integer, float, or char "output" to command line
     output will end with a new line if optional input "cr" = true
 */
 void out(string output, bool cr) {
@@ -137,14 +146,18 @@ void out(float output, bool cr) {
     (cr)? cout<<output<<endl: cout<<output;
 }
 
+void out(char output, bool cr) {
+    (cr)? cout<<output<<endl: cout<<output;
+}
+
 /* Draw the grid based on input array "board" of nine integers:
     0 = empty square
     1 = player 1 square
     2 = player 2 square
-    input string "player1" will be displayed in player 1 squares, default is "X"
-    input string "player2" will be displayed in player 2 squares, default is "O"
+    input character "player1" will be displayed in player 1 squares, default is "X"
+    input character "player2" will be displayed in player 2 squares, default is "O"
 */
-void drawBoard(int board[9], string player1, string player2){
+void drawBoard(int board[9], char player1, char player2){
     out(" ------------- ",1);
     for (int x=0;x<9;x+=3){
         out(" | ");
